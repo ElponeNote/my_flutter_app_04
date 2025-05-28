@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class ExplorePage extends StatelessWidget {
-  const ExplorePage({Key? key}) : super(key: key);
+  const ExplorePage({super.key});
 
   @override
   Widget build(BuildContext context) {

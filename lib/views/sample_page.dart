@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class SamplePage extends StatelessWidget {
-  const SamplePage({Key? key}) : super(key: key);
+  const SamplePage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../viewmodels/player_viewmodel.dart';
 
 class MiniPlayer extends StatelessWidget {
-  const MiniPlayer({Key? key}) : super(key: key);
+  const MiniPlayer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class MiniPlayer extends StatelessWidget {
             ),
             CupertinoButton(
               padding: EdgeInsets.zero,
-              minSize: 36,
+              minimumSize: const Size(36, 36),
               onPressed: () {
                 if (playerViewModel.isPlaying) {
                   playerViewModel.pause();

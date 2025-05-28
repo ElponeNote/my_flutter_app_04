@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class MusicListPage extends StatelessWidget {
-  const MusicListPage({Key? key}) : super(key: key);
+  const MusicListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
