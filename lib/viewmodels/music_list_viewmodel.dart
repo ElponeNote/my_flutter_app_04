@@ -1,13 +1,11 @@
-import '../models/music.dart';
 import 'package:flutter/foundation.dart';
+import '../models/music.dart';
+import '../models/playlist.dart';
+import '../resources/sample_data.dart';
 
 class MusicListViewModel extends ChangeNotifier {
-  List<Music> _musics = [];
+  List<Music> musics = sampleMusics;
+  List<Playlist> playlists = samplePlaylists;
 
-  List<Music> get musics => _musics;
-
-  void setMusics(List<Music> musics) {
-    _musics = musics;
-    notifyListeners();
-  }
-} 
+  // 추후 검색, 필터링, 추가/삭제 등 메서드 구현 예정
+}

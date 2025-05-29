@@ -1,89 +1,89 @@
-# Frontend 설계 문서 (음악 플레이어 앱)
+# project-overview (프로젝트 개요)
 
----
+- YouTube Music 스타일을 iOS(Cupertino) 디자인으로 재해석한 음악 플레이어 앱
+- 사용자는 음악을 탐색, 재생, 관리할 수 있으며, 직관적인 UX와 세련된 UI를 경험
+- Cupertino 위젯을 적극 활용하여 iOS 네이티브와 유사한 사용자 경험 제공
+- MVVM 패턴과 Provider 상태관리 적용
+- 최종 구현 화면: 1. 메인화면, 2. 재생화면
 
-## 1. Project Overview (프로젝트 요약)
-- **프로젝트 이름**: 음악 플레이어 앱 (iOS 스타일, Cupertino 위젯)
-- **목표**: PRD와 동일
+# feature-requirements (기능 요구사항)
 
----
+1. **홈 화면**
+   - 상단: 카테고리(운동, 에너지 충전, 팟캐스트 등) 버튼 (가로 스크롤)
+   - 중단: 인기/추천 플레이리스트(카드형, 가로 스크롤)
+   - 하단: 미니 플레이어(현재 재생 곡, 재생/일시정지)
+   - 하단 네비게이션: 홈, 샘플, 둘러보기, 보관함 (CupertinoTabBar)
 
-## 2. Core Functionalities (핵심 기능)
-- 홈 화면: 플레이리스트, 미니 플레이어
-- 음악 재생 화면: 커버, 정보, 컨트롤러
-- 하단 네비게이션: 4개 메뉴, Cupertino Icons
-- YouTube URL 음악 재생
+2. **음악 재생 화면**
+   - 앨범 커버(큰 이미지), 곡 제목, 아티스트명
+   - 좋아요, 저장, 공유 버튼
+   - 재생/일시정지, 이전/다음, 반복, 셔플 버튼
+   - Cupertino 슬라이더(진행 바), 재생 시간 표시
+   - 가사, 다음 트랙, 관련 항목 등 탭
 
----
+3. **음악 재생 기능**
+   - YouTube URL을 활용한 음악 재생 (youtube_player_flutter)
+   - 슬라이더/시간 연동, seek 동작
 
-## 3. UI/UX 규칙
-- 모든 UI는 Cupertino 위젯 기반으로 구현
-- MVVM 패턴을 따른다 (View, ViewModel, Model 분리)
-- 네이밍 컨벤션: 파스칼케이스(클래스), 카멜케이스(메서드/변수)
-- 컴포넌트 재사용성 고려
-- 반응형 레이아웃, iOS 스타일 일관성 유지
-- 하드코딩 대신 상수/리소스 분리
+4. **기타**
+   - 각 탭(샘플, 둘러보기, 보관함)은 간단한 화면만 구현
 
----
+# relevant-codes (관련 코드)
 
-## 4. 예상 파일 구조 (MVVM)
+- CupertinoApp, CupertinoPageScaffold, CupertinoNavigationBar, CupertinoButton, CupertinoTabBar 등
+- Provider 상태관리
+- youtube_player_flutter 패키지로 유튜브 음악 재생
+- MVVM 패턴 적용 (models, viewmodels, views, widgets)
+
+# Current-file-instruction (현재 파일 구조)
 
 ```
 lib/
   main.dart
-  app.dart
   models/
-    music.dart
-    playlist.dart
+    music.dart           # 음악 데이터 모델
+    playlist.dart        # 플레이리스트 데이터 모델
   viewmodels/
-    music_list_viewmodel.dart
-    player_viewmodel.dart
+    music_list_viewmodel.dart   # 음악 리스트 상태 관리
+    player_viewmodel.dart       # 재생 상태 및 컨트롤 관리
   views/
-    music_list_page.dart
-    player_page.dart
-    mini_player.dart
-    home_page.dart
-    sample_page.dart
-    explore_page.dart
-    library_page.dart
+    home_page.dart      # 홈(메인) 화면
+    mini_player.dart    # 하단 미니 플레이어
+    player_page.dart    # 음악 재생 화면
+    sample_page.dart    # 샘플 탭 화면
+    explore_page.dart   # 둘러보기 탭 화면
+    library_page.dart   # 보관함 탭 화면
   widgets/
-    music_tile.dart
-    cupertino_bottom_nav.dart
-    ...
+    music_tile.dart           # 음악 리스트 아이템 위젯
+    playlist_card.dart        # 플레이리스트 카드 위젯
+    cupertino_bottom_nav.dart # 하단 네비게이션 바 위젯
   resources/
-    app_colors.dart
-    app_icons.dart
-    app_strings.dart
+    colors.dart         # 컬러 팔레트
+    themes.dart         # 테마 설정
+    sample_data.dart    # 샘플 데이터
+require/
+  PRD.md
+  frontend.md
+README.md
 ```
 
----
+# 작업 진행 상황 (Progress)
 
-## 5. 작업 계획 (Step by Step)
-
-1. **프로젝트 세팅 및 패키지 추가** (완료)
-   - Cupertino, youtube_player_flutter 등
-   - pubspec.yaml에 패키지 추가 및 flutter pub get 실행
-   - MVVM 구조에 맞는 폴더(models, viewmodels, views, widgets, resources) 생성
-2. **MVVM 구조 세팅 및 기본 파일 생성** (완료)
-   - models, viewmodels, views, widgets, resources 폴더에 기본 파일 생성 및 뼈대 코드 작성
-3. **기본 네비게이션/라우팅 구현** (완료)
-   - CupertinoTabScaffold, 각 탭 화면 연결 및 네비게이션 동작 확인
-4. **홈/음악 리스트 UI 구현** (완료)
-   - [완료] 샘플 데이터 및 리스트 표시
-   - [완료] 미니 플레이어 UI 하단 배치
-   - [완료] 리스트 아이템 탭 시 재생 화면 이동 및 재생 처리
-5. **음악 재생 화면 UI 구현**
-   - 커버, 정보, 컨트롤러, 슬라이더
-6. **YouTube 음악 재생 기능 구현**
-   - youtube_player_flutter 연동, ViewModel 연결
-7. **상태 관리 및 ViewModel 연결**
-   - Provider 등 활용, View-ViewModel 바인딩
-8. **UI/UX 개선 및 리팩토링**
-   - 디자인 일관성, 코드 정리
+- [x] 1. 폴더/파일 구조 생성 (완료)
+- [x] 2. 데이터 및 모델 정의 (완료)
+- [ ] 3. MVVM 및 Provider 세팅
+- [ ] 4. UI 구현
+- [ ] 5. YouTube 음악 재생 연동
+- [ ] 6. 추가 기능 및 UX 개선
 
 ---
 
-## 6. 기타 참고 사항
-- PRD 문서와 동기화하며 진행
-- 디자인 참고: iOS 기본 음악 앱, YouTube Music
-- 테스트 및 디버깅: 각 단계별로 확인 
+# rules (규칙)
+
+- 모든 UI는 Cupertino 위젯을 우선 사용한다.
+- iOS 디자인 가이드라인(여백, 폰트, 컬러톤, 정렬 등)을 최대한 준수한다.
+- MVVM 패턴을 적용하여 코드 구조를 명확히 한다.
+- Provider로 상태관리를 일관성 있게 적용한다.
+- 실제 음악 재생은 YouTube URL 기반으로 구현한다.
+- 샘플/둘러보기/보관함 탭은 간단한 화면만 구현한다.
+- 코드, UI, UX의 일관성과 가독성을 항상 유지한다. 
