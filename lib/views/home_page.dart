@@ -5,6 +5,7 @@ import '../viewmodels/music_list_viewmodel.dart';
 import '../widgets/playlist_card.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/cupertino_bottom_nav.dart';
+import '../widgets/music_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,11 +18,12 @@ class HomePage extends StatelessWidget {
 
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.black,
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
+      child: Stack(
+        children: [
+          // 메인 콘텐츠 (스크롤)
+          Positioned.fill(
+            child: SafeArea(
+              bottom: false, // 하단 고정 위젯과 겹치지 않게
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +74,7 @@ class HomePage extends StatelessWidget {
                     ),
                     // 3x3 그리드
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 4),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -88,7 +90,7 @@ class HomePage extends StatelessWidget {
                     ),
                     // 인기 급상승 Shorts 섹션
                     Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 18, right: 16, bottom: 6),
+                      padding: const EdgeInsets.only(left: 16, top: 8, right: 16, bottom: 2),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -111,31 +113,57 @@ class HomePage extends StatelessWidget {
                         itemBuilder: (context, idx) => PlaylistCard(playlist: playlists[idx], isShorts: true, dark: true),
                       ),
                     ),
+                    // 미니플레이어와 네비게이션 바 사이 간격 확보
+                    SizedBox(height: 56),
                   ],
                 ),
               ),
             ),
-            // 미니 플레이어
-            const MiniPlayer(dark: true),
-            // 하단 네비게이션
-            CupertinoBottomNav(currentIndex: 0, onTap: (index) {}),
-            // 홈 인디케이터 (SafeArea로 감싸서 시스템 인디케이터 위에 위치)
-            SafeArea(
-              top: false,
-              child: Center(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 6, bottom: 0),
-                  width: 80,
-                  height: 7,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.45),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+          ),
+          // 미니플레이어를 Stack의 하단에 고정
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 88,
+            child: SafeArea(
+              top: false, left: false, right: false, bottom: true,
+              child: MiniPlayer(dark: true),
+            ),
+          ),
+          // 네비게이션 바를 Stack의 하단에 고정
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 32,
+            child: SafeArea(
+              top: false, left: false, right: false, bottom: true,
+              child: CupertinoBottomNav(currentIndex: 0, onTap: (index) {}),
+            ),
+          ),
+          // 홈 인디케이터 (항상 화면 맨 아래에 오버레이)
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Center(
+              child: Container(
+                width: 64,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: Color.alphaBlend(Colors.white.withAlpha((0.38 * 255).toInt()), Colors.transparent),
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.alphaBlend(Colors.black.withAlpha((0.18 * 255).toInt()), Colors.transparent),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

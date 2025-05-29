@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import '../viewmodels/player_viewmodel.dart';
+import '../views/player_page.dart';
 
 class MiniPlayer extends StatelessWidget {
   final bool dark;
@@ -24,7 +26,7 @@ class MiniPlayer extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: dark
-              ? CupertinoColors.darkBackgroundGray.withAlpha((0.92 * 255).toInt())
+              ? Color.alphaBlend(Colors.black.withAlpha((0.7 * 255).toInt()), Colors.transparent)
               : CupertinoColors.systemGrey6.withAlpha((0.92 * 255).toInt()),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
@@ -85,22 +87,6 @@ class MiniPlayer extends StatelessWidget {
             const SizedBox(width: 8),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class PlayerPage extends StatelessWidget {
-  const PlayerPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('재생화면'),
-      ),
-      child: Center(
-        child: Text('Player UI 구현 예정', style: TextStyle(color: CupertinoColors.white)),
       ),
     );
   }

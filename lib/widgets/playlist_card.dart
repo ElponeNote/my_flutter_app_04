@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import '../models/playlist.dart';
+import 'package:provider/provider.dart';
+import '../viewmodels/player_viewmodel.dart';
+import '../views/player_page.dart';
 
 class PlaylistCard extends StatelessWidget {
   final Playlist playlist;
@@ -11,45 +14,64 @@ class PlaylistCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isShorts) {
       // Shorts 스타일: 작은 썸네일, 세로형
-      return SizedBox(
-        height: 80,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                playlist.thumbnailUrl,
-                width: 54,
-                height: 54,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+      return GestureDetector(
+        onTap: () {
+          if (playlist.musics.isNotEmpty) {
+            final playerVM = Provider.of<PlayerViewModel>(context, listen: false);
+            playerVM.play(playlist.musics[0]);
+            Navigator.of(context).push(
+              CupertinoPageRoute(builder: (context) => const PlayerPage()),
+            );
+          }
+        },
+        child: SizedBox(
+          height: 80,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  playlist.thumbnailUrl,
                   width: 54,
                   height: 54,
-                  color: dark ? CupertinoColors.darkBackgroundGray : CupertinoColors.systemGrey4,
-                  child: Icon(CupertinoIcons.music_note, color: dark ? CupertinoColors.systemGrey : CupertinoColors.systemGrey2, size: 22),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 54,
+                    height: 54,
+                    color: dark ? CupertinoColors.darkBackgroundGray : CupertinoColors.systemGrey4,
+                    child: Icon(CupertinoIcons.music_note, color: dark ? CupertinoColors.systemGrey : CupertinoColors.systemGrey2, size: 22),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 4),
-            SizedBox(
-              width: 54,
-              child: Text(
-                playlist.name,
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: dark ? CupertinoColors.white : CupertinoColors.black),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+              const SizedBox(height: 4),
+              SizedBox(
+                width: 54,
+                child: Text(
+                  playlist.name,
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: dark ? CupertinoColors.white : CupertinoColors.black),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }
     // 기본 그리드 카드
     return CupertinoButton(
       padding: EdgeInsets.zero,
-      onPressed: () {},
+      onPressed: () {
+        if (playlist.musics.isNotEmpty) {
+          final playerVM = Provider.of<PlayerViewModel>(context, listen: false);
+          playerVM.play(playlist.musics[0]);
+          Navigator.of(context).push(
+            CupertinoPageRoute(builder: (context) => const PlayerPage()),
+          );
+        }
+      },
       child: LayoutBuilder(
         builder: (context, constraints) {
           return SizedBox(
