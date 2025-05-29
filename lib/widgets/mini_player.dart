@@ -26,7 +26,7 @@ class MiniPlayer extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: dark
-              ? Color.alphaBlend(Colors.black.withAlpha((0.7 * 255).toInt()), Colors.transparent)
+              ? CupertinoColors.black.withOpacity(0.85)
               : CupertinoColors.systemGrey6.withAlpha((0.92 * 255).toInt()),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [

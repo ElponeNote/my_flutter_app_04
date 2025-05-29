@@ -119,15 +119,61 @@ class _PlayerPageState extends State<PlayerPage> {
                   ),
                 ),
               const SizedBox(height: 18),
-              // 컨트롤 버튼 (재생/일시정지, 이전, 다음, 반복, 셔플)
+              // 좋아요/댓글/저장/공유 버튼 (유튜브 플레이어 하단)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: const [
+                        Icon(CupertinoIcons.heart_fill, color: CupertinoColors.systemRed, size: 28),
+                        SizedBox(height: 2),
+                        Text('1.2K', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
+                      ],
+                    ),
+                    Column(
+                      children: const [
+                        Icon(CupertinoIcons.chat_bubble_text, color: CupertinoColors.systemGrey, size: 28),
+                        SizedBox(height: 2),
+                        Text('댓글', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
+                      ],
+                    ),
+                    Column(
+                      children: const [
+                        Icon(CupertinoIcons.bookmark, color: CupertinoColors.systemGrey, size: 28),
+                        SizedBox(height: 2),
+                        Text('저장', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
+                      ],
+                    ),
+                    Column(
+                      children: const [
+                        Icon(CupertinoIcons.share, color: CupertinoColors.systemGrey, size: 28),
+                        SizedBox(height: 2),
+                        Text('공유', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              // 컨트롤 버튼 (랜덤, 이전, 재생/일시정지, 다음, 반복)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // 랜덤 재생 버튼
+                  CupertinoButton(
+                    padding: const EdgeInsets.all(8),
+                    child: const Icon(CupertinoIcons.shuffle, size: 28, color: CupertinoColors.systemGrey2),
+                    onPressed: () {},
+                  ),
+                  // 이전 곡
                   CupertinoButton(
                     padding: const EdgeInsets.all(8),
                     child: const Icon(CupertinoIcons.backward_end_fill, size: 32, color: CupertinoColors.white),
                     onPressed: () {},
                   ),
+                  // 재생/일시정지
                   CupertinoButton(
                     padding: const EdgeInsets.all(8),
                     child: Icon(
@@ -146,9 +192,16 @@ class _PlayerPageState extends State<PlayerPage> {
                       }
                     },
                   ),
+                  // 다음 곡
                   CupertinoButton(
                     padding: const EdgeInsets.all(8),
                     child: const Icon(CupertinoIcons.forward_end_fill, size: 32, color: CupertinoColors.white),
+                    onPressed: () {},
+                  ),
+                  // 반복 재생 버튼
+                  CupertinoButton(
+                    padding: const EdgeInsets.all(8),
+                    child: const Icon(CupertinoIcons.repeat, size: 28, color: CupertinoColors.systemGrey2),
                     onPressed: () {},
                   ),
                 ],
@@ -161,48 +214,6 @@ class _PlayerPageState extends State<PlayerPage> {
                   children: [
                     Text(_formatDuration(_position), style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 13)),
                     Text(_formatDuration(_duration), style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 13)),
-                  ],
-                ),
-              ),
-              // 좋아요, 저장, 공유 버튼
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      child: Column(
-                        children: const [
-                          Icon(CupertinoIcons.heart, color: CupertinoColors.systemGrey, size: 26),
-                          SizedBox(height: 2),
-                          Text('좋아요', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
-                        ],
-                      ),
-                      onPressed: () {},
-                    ),
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      child: Column(
-                        children: const [
-                          Icon(CupertinoIcons.bookmark, color: CupertinoColors.systemGrey, size: 26),
-                          SizedBox(height: 2),
-                          Text('저장', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
-                        ],
-                      ),
-                      onPressed: () {},
-                    ),
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      child: Column(
-                        children: const [
-                          Icon(CupertinoIcons.share, color: CupertinoColors.systemGrey, size: 26),
-                          SizedBox(height: 2),
-                          Text('공유', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
-                        ],
-                      ),
-                      onPressed: () {},
-                    ),
                   ],
                 ),
               ),
