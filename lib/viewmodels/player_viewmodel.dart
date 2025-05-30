@@ -32,5 +32,10 @@ class PlayerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPlaying(bool value) {
+    isPlaying = value;
+    notifyListeners();
+  }
+
   // 추후: 다음/이전 곡, 반복/셔플 등 구현
 }

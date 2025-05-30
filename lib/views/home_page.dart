@@ -5,7 +5,9 @@ import '../viewmodels/music_list_viewmodel.dart';
 import '../widgets/playlist_card.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/cupertino_bottom_nav.dart';
+import '../views/quick_pick_edit_page.dart';
 import '../widgets/music_tile.dart';
+import '../widgets/music_grid_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,7 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final musicListVM = Provider.of<MusicListViewModel>(context);
-    final playlists = musicListVM.playlists;
+    final musics = musicListVM.musics;
     final categories = ['운동', '에너지 충전', '팟캐스트', '행복한 기분'];
 
     return CupertinoPageScaffold(
@@ -51,7 +53,14 @@ class HomePage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Icon(CupertinoIcons.right_chevron, color: CupertinoColors.systemGrey2, size: 22),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(builder: (context) => const QuickPickEditPage()),
+                              );
+                            },
+                            child: Icon(CupertinoIcons.right_chevron, color: CupertinoColors.systemGrey2, size: 22),
+                          ),
                         ],
                       ),
                     ),
@@ -84,8 +93,8 @@ class HomePage extends StatelessWidget {
                           crossAxisSpacing: 10,
                           childAspectRatio: 1.1,
                         ),
-                        itemCount: playlists.length > 9 ? 9 : playlists.length,
-                        itemBuilder: (context, idx) => PlaylistCard(playlist: playlists[idx], dark: true),
+                        itemCount: musics.length > 9 ? 9 : musics.length,
+                        itemBuilder: (context, idx) => MusicGridCard(music: musics[idx], dark: true),
                       ),
                     ),
                     // 인기 급상승 Shorts 섹션
@@ -108,9 +117,12 @@ class HomePage extends StatelessWidget {
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: playlists.length,
+                        itemCount: musics.length,
                         separatorBuilder: (_, __) => const SizedBox(width: 12),
-                        itemBuilder: (context, idx) => PlaylistCard(playlist: playlists[idx], isShorts: true, dark: true),
+                        itemBuilder: (context, idx) => SizedBox(
+                          width: 90,
+                          child: MusicGridCard(music: musics[idx], dark: true),
+                        ),
                       ),
                     ),
                     // 미니플레이어와 네비게이션 바 사이 간격 확보

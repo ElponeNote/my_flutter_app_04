@@ -19,4 +19,36 @@
 17. [퀸카 (Queencard) - (여자)아이들](https://www.youtube.com/watch?v=Jh4QFaPmdss)
 18. [사건의 지평선 (Event Horizon) - 윤하 (YOUNHA)](https://www.youtube.com/watch?v=4HG_CJzyX6A)
 19. [After LIKE - IVE (아이브)](https://www.youtube.com/watch?v=F0B7HDiY-10)
-20. [Attention - NewJeans](https://www.youtube.com/watch?v=js1CtxSY38I) 
+20. [Attention - NewJeans](https://www.youtube.com/watch?v=js1CtxSY38I)
+
+# 인기 음악 플레이리스트
+
+1. 로제 - APT  
+https://youtu.be/ekr2nTexO40?si=yDZNL187ooGzeN6
+
+2. 브루노마스 - The Lazy Song  
+https://youtu.be/fLexgOxsZu0?si=xU1Bv1IYHcyxhmAL
+
+3. NewJeans - Super Shy  
+https://youtu.be/ArmDp-zijuc?si=7UhZG6i2J-FP4Tz1
+
+4. LE SSERAFIM - EASY  
+https://youtu.be/EuYeDngHcqA?si=qlq2Y5wKHzYtFWAl
+
+5. IVE - I AM  
+https://youtu.be/6ZUIwj3FgUY?si=C9gDgK8cEzT_8tD
+
+6. NCT DREAM - Candy  
+https://youtu.be/zuoSn3ObMz4?si=CxPP7z8mI8R12rMi
+
+7. SEVENTEEN - F*ck My Life  
+https://youtu.be/EVCt7zY0cW4?si=lvhxxXL0Hs6UQXB3
+
+8. AKMU - Love Lee  
+https://youtu.be/EvBzCp4_F28?si=Hs_Hs_Hs_Hs_Hs_H
+
+9. BTS (방탄소년단) - Dynamite  
+https://youtu.be/gdZLi9oWNZg
+
+10. BLACKPINK - How You Like That  
+https://youtu.be/ioNng23DkIM 

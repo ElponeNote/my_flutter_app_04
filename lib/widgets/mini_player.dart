@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 import '../viewmodels/player_viewmodel.dart';
 import '../views/player_page.dart';
 
@@ -26,7 +25,7 @@ class MiniPlayer extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: dark
-              ? CupertinoColors.black.withOpacity(0.85)
+              ? CupertinoColors.black.withAlpha((0.85 * 255).toInt())
               : CupertinoColors.systemGrey6.withAlpha((0.92 * 255).toInt()),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [

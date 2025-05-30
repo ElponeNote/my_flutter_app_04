@@ -1,129 +1,82 @@
 import '../models/music.dart';
 import '../models/playlist.dart';
+import 'dart:math';
 
-final List<Music> sampleMusics = [
+final List<Music> popularMusics = [
   Music(
-    title: 'No One Else Like You',
-    artist: 'Adam Levine',
-    albumArtUrl: 'https://i.imgur.com/albumArt1.jpg',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example1',
+    title: 'APT',
+    artist: '로제',
+    albumArtUrl: 'https://img.youtube.com/vi/ekr2nTexO40/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/ekr2nTexO40?si=yDZNL187ooGzeN6',
   ),
   Music(
-    title: 'Shape of You',
-    artist: 'Ed Sheeran',
-    albumArtUrl: 'https://i.imgur.com/albumArt2.jpg',
-    youtubeUrl: 'https://www.youtube.com/watch?v=JGwWNGJdvx8',
+    title: 'The Lazy Song',
+    artist: '브루노마스',
+    albumArtUrl: 'https://img.youtube.com/vi/fLexgOxsZu0/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/fLexgOxsZu0?si=xU1Bv1IYHcyxhmAL',
   ),
-  // ... 추가 곡
+  Music(
+    title: 'Super Shy',
+    artist: 'NewJeans',
+    albumArtUrl: 'https://img.youtube.com/vi/ArmDp-zijuc/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/ArmDp-zijuc?si=7UhZG6i2J-FP4Tz1',
+  ),
+  Music(
+    title: 'EASY',
+    artist: 'LE SSERAFIM',
+    albumArtUrl: 'https://img.youtube.com/vi/EuYeDngHcqA/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/EuYeDngHcqA?si=qlq2Y5wKHzYtFWAl',
+  ),
+  Music(
+    title: 'I AM',
+    artist: 'IVE',
+    albumArtUrl: 'https://img.youtube.com/vi/6ZUIwj3FgUY/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/6ZUIwj3FgUY?si=C9gDgK8cEzT_8tD',
+  ),
+  Music(
+    title: 'Candy',
+    artist: 'NCT DREAM',
+    albumArtUrl: 'https://img.youtube.com/vi/zuoSn3ObMz4/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/zuoSn3ObMz4?si=CxPP7z8mI8R12rMi',
+  ),
+  Music(
+    title: 'F*ck My Life',
+    artist: 'SEVENTEEN',
+    albumArtUrl: 'https://img.youtube.com/vi/EVCt7zY0cW4/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/EVCt7zY0cW4?si=lvhxxXL0Hs6UQXB3',
+  ),
+  Music(
+    title: 'Love Lee',
+    artist: 'AKMU',
+    albumArtUrl: 'https://img.youtube.com/vi/EvBzCp4_F28/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/EvBzCp4_F28?si=Hs_Hs_Hs_Hs_Hs_H',
+  ),
+  Music(
+    title: 'Dynamite',
+    artist: 'BTS (방탄소년단)',
+    albumArtUrl: 'https://img.youtube.com/vi/gdZLi9oWNZg/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/gdZLi9oWNZg',
+  ),
+  Music(
+    title: 'How You Like That',
+    artist: 'BLACKPINK',
+    albumArtUrl: 'https://img.youtube.com/vi/ioNng23DkIM/hqdefault.jpg',
+    youtubeUrl: 'https://youtu.be/ioNng23DkIM',
+  ),
 ];
+
+List<Music> getRandomPopularMusics([int count = 10]) {
+  final musics = List<Music>.from(popularMusics);
+  musics.shuffle(Random());
+  return musics.take(count).toList();
+}
+
+final List<Music> sampleMusics = getRandomPopularMusics();
 
 final List<Playlist> samplePlaylists = [
   Playlist(
-    name: 'Pop Hits',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Blinding Lights',
-        artist: 'The Weeknd',
-        albumArtUrl: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'Rock Classics',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Bohemian Rhapsody',
-        artist: 'Queen',
-        albumArtUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'Jazz Vibes',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Take Five',
-        artist: 'Dave Brubeck',
-        albumArtUrl: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=vmDDOFXSgAs',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'EDM Party',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Wake Me Up',
-        artist: 'Avicii',
-        albumArtUrl: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=IcrbM1l_BoI',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'K-Pop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Dynamite',
-        artist: 'BTS',
-        albumArtUrl: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=gdZLi9oWNZg',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'Indie Mood',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Lost Stars',
-        artist: 'Adam Levine',
-        albumArtUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=cL4uhaQ58Rk',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'Hip-Hop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'SICKO MODE',
-        artist: 'Travis Scott',
-        albumArtUrl: 'https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=6ONRf7h3Mdk',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'Acoustic',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Photograph',
-        artist: 'Ed Sheeran',
-        albumArtUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=nSDgHBxUbVQ',
-      ),
-    ],
-  ),
-  Playlist(
-    name: 'Classic',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-    musics: [
-      Music(
-        title: 'Nocturne op.9 No.2',
-        artist: 'Chopin',
-        albumArtUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
-        youtubeUrl: 'https://www.youtube.com/watch?v=9E6b3swbnWg',
-      ),
-    ],
+    name: '인기 음악 플레이리스트',
+    thumbnailUrl: popularMusics[0].albumArtUrl,
+    musics: popularMusics,
   ),
 ];
