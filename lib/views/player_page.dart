@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../viewmodels/player_viewmodel.dart';
 import '../widgets/youtube_player_widget.dart';
+import '../viewmodels/music_list_viewmodel.dart';
+import '../models/music.dart';
 
 class PlayerPage extends StatefulWidget {
   const PlayerPage({super.key});
@@ -15,12 +17,46 @@ class _PlayerPageState extends State<PlayerPage> {
   YoutubePlayerController? _controller;
   int _tabIndex = 0; // 0: 노래, 1: 동영상
   int _bottomTabIndex = 0; // 0: 다음 트랙, 1: 가사, 2: 관련 항목
+  bool _shuffle = false;
+  bool _repeat = false;
+  int _currentIndex = 0;
+
+  void _playMusicAt(int index, List<Music> musics) {
+    if (index < 0 || index >= musics.length) return;
+    Provider.of<PlayerViewModel>(context, listen: false).play(musics[index]);
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void _playNext(List<Music> musics) {
+    if (_shuffle) {
+      final random = musics.toList()..removeAt(_currentIndex);
+      if (random.isNotEmpty) {
+        final next = (random..shuffle()).first;
+        _playMusicAt(musics.indexOf(next), musics);
+      }
+    } else {
+      int nextIndex = _currentIndex + 1;
+      if (nextIndex >= musics.length) nextIndex = 0;
+      _playMusicAt(nextIndex, musics);
+    }
+  }
+
+  void _playPrevious(List<Music> musics) {
+    int prevIndex = _currentIndex - 1;
+    if (prevIndex < 0) prevIndex = musics.length - 1;
+    _playMusicAt(prevIndex, musics);
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final musicListVM = Provider.of<MusicListViewModel>(context, listen: false);
+    final musics = musicListVM.musics;
     final music = Provider.of<PlayerViewModel>(context).currentMusic;
     if (music != null) {
+      _currentIndex = musics.indexWhere((m) => m.youtubeUrl == music.youtubeUrl);
       final videoId = YoutubePlayer.convertUrlToId(music.youtubeUrl);
       if (videoId != null) {
         _controller = YoutubePlayerController(
@@ -28,8 +64,8 @@ class _PlayerPageState extends State<PlayerPage> {
           flags: const YoutubePlayerFlags(
             autoPlay: true,
             mute: false,
-            hideControls: false,
-            controlsVisibleAtStart: true,
+            hideControls: true,
+            controlsVisibleAtStart: false,
             disableDragSeek: false,
             loop: false,
             isLive: false,
@@ -39,11 +75,46 @@ class _PlayerPageState extends State<PlayerPage> {
         );
         _controller!.addListener(() {
           if (mounted) {
-            setState(() {
-              // _position = _controller!.value.position;
-              // _duration = _controller!.value.metaData.duration;
-            });
+            setState(() {});
+            // 곡이 끝났는지 감지
+            if (_controller!.value.playerState == PlayerState.ended) {
+              if (_repeat) {
+                _controller!.seekTo(Duration.zero);
+                _controller!.play();
+              } else {
+                _playNext(musics);
+              }
+            }
           }
+        });
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant PlayerPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final music = Provider.of<PlayerViewModel>(context, listen: false).currentMusic;
+    if (music != null) {
+      final videoId = YoutubePlayer.convertUrlToId(music.youtubeUrl);
+      if (videoId != null) {
+        _controller?.dispose();
+        _controller = YoutubePlayerController(
+          initialVideoId: videoId,
+          flags: const YoutubePlayerFlags(
+            autoPlay: true,
+            mute: false,
+            hideControls: true,
+            controlsVisibleAtStart: false,
+            disableDragSeek: false,
+            loop: false,
+            isLive: false,
+            forceHD: false,
+            enableCaption: false,
+          ),
+        );
+        _controller!.addListener(() {
+          if (mounted) setState(() {});
         });
       }
     }
@@ -123,50 +194,83 @@ class _PlayerPageState extends State<PlayerPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 12),
                     // 앨범아트
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Image.network(
-                        music.albumArtUrl,
-                        width: 260,
-                        height: 260,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => SizedBox(
-                          width: 260,
-                          height: 260,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: CupertinoColors.darkBackgroundGray,
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final double width = MediaQuery.of(context).size.width - 16;
+                        final double height = width * 9 / 16;
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
+                              child: ClipRRect(
+                                key: ValueKey(music.albumArtUrl),
+                                borderRadius: BorderRadius.circular(18),
+                                child: Image.network(
+                                  music.albumArtUrl,
+                                  width: width,
+                                  height: height,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => SizedBox(
+                                    width: width,
+                                    height: height,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: CupertinoColors.darkBackgroundGray,
+                                      ),
+                                      child: const Icon(CupertinoIcons.music_note, size: 60, color: CupertinoColors.systemGrey2),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: const Icon(CupertinoIcons.music_note, size: 60, color: CupertinoColors.systemGrey2),
                           ),
-                        ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 7),
+                    // 곡명/아티스트
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      transitionBuilder: (child, anim) => SlideTransition(
+                        position: Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(anim),
+                        child: FadeTransition(opacity: anim, child: child),
+                      ),
+                      child: Column(
+                        key: ValueKey(music.title + music.artist),
+                        children: [
+                          Text(
+                            music.title,
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CupertinoColors.white),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            music.artist,
+                            style: const TextStyle(fontSize: 16, color: CupertinoColors.systemGrey2),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 28),
-                    // 곡명/아티스트
-                    Text(
-                      music.title,
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CupertinoColors.white),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      music.artist,
-                      style: const TextStyle(fontSize: 16, color: CupertinoColors.systemGrey2),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 12),
                     // 유튜브 플레이어
                     if (_controller != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: YoutubePlayerWidget(
-                          controller: _controller!,
-                          aspectRatio: 16 / 9,
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 400),
+                        transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
+                        child: Padding(
+                          key: ValueKey(music.youtubeUrl),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: YoutubePlayerWidget(
+                            controller: _controller!,
+                            aspectRatio: 16 / 9,
+                          ),
                         ),
                       ),
                     const SizedBox(height: 18),
@@ -211,49 +315,66 @@ class _PlayerPageState extends State<PlayerPage> {
                     // 컨트롤 버튼 (셔플, 이전, 재생/일시정지, 다음, 반복)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CupertinoButton(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(CupertinoIcons.shuffle, size: 26, color: CupertinoColors.systemGrey2),
-                            onPressed: () {},
-                          ),
-                          CupertinoButton(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(CupertinoIcons.backward_end_fill, size: 32, color: CupertinoColors.white),
-                            onPressed: () {},
-                          ),
-                          CupertinoButton(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(
-                              playerVM.isPlaying ? CupertinoIcons.pause_solid : CupertinoIcons.play_arrow_solid,
-                              size: 44,
-                              color: CupertinoColors.white,
-                            ),
-                            onPressed: () {
-                              if (_controller != null) {
-                                if (_controller!.value.isPlaying) {
-                                  _controller!.pause();
-                                  playerVM.setPlaying(false);
-                                } else {
-                                  _controller!.play();
-                                  playerVM.setPlaying(true);
-                                }
-                              }
-                            },
-                          ),
-                          CupertinoButton(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(CupertinoIcons.forward_end_fill, size: 32, color: CupertinoColors.white),
-                            onPressed: () {},
-                          ),
-                          CupertinoButton(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(CupertinoIcons.repeat, size: 26, color: CupertinoColors.systemGrey2),
-                            onPressed: () {},
-                          ),
-                        ],
+                      child: Consumer<MusicListViewModel>(
+                        builder: (context, musicListVM, _) {
+                          final musics = musicListVM.musics;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CupertinoButton(
+                                padding: const EdgeInsets.all(8),
+                                child: Icon(CupertinoIcons.shuffle, size: 26, color: _shuffle ? CupertinoColors.white : CupertinoColors.systemGrey2),
+                                onPressed: () {
+                                  setState(() {
+                                    _shuffle = !_shuffle;
+                                  });
+                                },
+                              ),
+                              CupertinoButton(
+                                padding: const EdgeInsets.all(8),
+                                child: Icon(CupertinoIcons.backward_end_fill, size: 32, color: CupertinoColors.white),
+                                onPressed: () {
+                                  _playPrevious(musics);
+                                },
+                              ),
+                              CupertinoButton(
+                                padding: const EdgeInsets.all(8),
+                                child: Icon(
+                                  playerVM.isPlaying ? CupertinoIcons.pause_solid : CupertinoIcons.play_arrow_solid,
+                                  size: 44,
+                                  color: CupertinoColors.white,
+                                ),
+                                onPressed: () {
+                                  if (_controller != null) {
+                                    if (_controller!.value.isPlaying) {
+                                      _controller!.pause();
+                                      playerVM.setPlaying(false);
+                                    } else {
+                                      _controller!.play();
+                                      playerVM.setPlaying(true);
+                                    }
+                                  }
+                                },
+                              ),
+                              CupertinoButton(
+                                padding: const EdgeInsets.all(8),
+                                child: Icon(CupertinoIcons.forward_end_fill, size: 32, color: CupertinoColors.white),
+                                onPressed: () {
+                                  _playNext(musics);
+                                },
+                              ),
+                              CupertinoButton(
+                                padding: const EdgeInsets.all(8),
+                                child: Icon(CupertinoIcons.repeat, size: 26, color: _repeat ? CupertinoColors.white : CupertinoColors.systemGrey2),
+                                onPressed: () {
+                                  setState(() {
+                                    _repeat = !_repeat;
+                                  });
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ],

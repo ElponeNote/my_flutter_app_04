@@ -21,34 +21,25 @@
 19. [After LIKE - IVE (아이브)](https://www.youtube.com/watch?v=F0B7HDiY-10)
 20. [Attention - NewJeans](https://www.youtube.com/watch?v=js1CtxSY38I)
 
-# 인기 음악 플레이리스트
+# 인기 음악 플레이리스트 (앨범아트 포함)
 
-1. 로제 - APT  
-https://youtu.be/ekr2nTexO40?si=yDZNL187ooGzeN6
-
-2. 브루노마스 - The Lazy Song  
-https://youtu.be/fLexgOxsZu0?si=xU1Bv1IYHcyxhmAL
-
-3. NewJeans - Super Shy  
-https://youtu.be/ArmDp-zijuc?si=7UhZG6i2J-FP4Tz1
-
-4. LE SSERAFIM - EASY  
-https://youtu.be/EuYeDngHcqA?si=qlq2Y5wKHzYtFWAl
-
-5. IVE - I AM  
-https://youtu.be/6ZUIwj3FgUY?si=C9gDgK8cEzT_8tD
-
-6. NCT DREAM - Candy  
-https://youtu.be/zuoSn3ObMz4?si=CxPP7z8mI8R12rMi
-
-7. SEVENTEEN - F*ck My Life  
-https://youtu.be/EVCt7zY0cW4?si=lvhxxXL0Hs6UQXB3
-
-8. AKMU - Love Lee  
-https://youtu.be/EvBzCp4_F28?si=Hs_Hs_Hs_Hs_Hs_H
-
-9. BTS (방탄소년단) - Dynamite  
-https://youtu.be/gdZLi9oWNZg
-
-10. BLACKPINK - How You Like That  
-https://youtu.be/ioNng23DkIM 
+1. [APT - 로제](https://youtu.be/ekr2nTexO40?si=yDZNL187ooGzeN6)  
+   ![앨범아트](https://image.bugsm.co.kr/album/images/500/40913/4091347.jpg)
+2. [The Lazy Song - 브루노마스](https://youtu.be/fLexgOxsZu0?si=xU1Bv1IYHcyxhmAL)  
+   ![앨범아트](https://upload.wikimedia.org/wikipedia/en/0/02/Bruno_Mars_-_Doo-Wops_%26_Hooligans.png)
+3. [Super Shy - NewJeans](https://youtu.be/ArmDp-zijuc?si=7UhZG6i2J-FP4Tz1)  
+   ![앨범아트](https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/083/857/682/83857682_1688713360510_1_600x600.JPG)
+4. [EASY - LE SSERAFIM](https://youtu.be/EuYeDngHcqA?si=qlq2Y5wKHzYtFWAl)  
+   ![앨범아트](https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/084/000/857/84000857_1708053660192_1_600x600.JPG)
+5. [I AM - IVE](https://youtu.be/6ZUIwj3FgUY?si=C9gDgK8cEzT_8tD)  
+   ![앨범아트](https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/084/000/329/84000329_1681194633280_1_600x600.JPG)
+6. [Candy - NCT DREAM](https://youtu.be/zuoSn3ObMz4?si=CxPP7z8mI8R12rMi)  
+   ![앨범아트](https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/083/805/805/83805805_1671089630100_1_600x600.JPG)
+7. [F*ck My Life - SEVENTEEN](https://youtu.be/EVCt7zY0cW4?si=lvhxxXL0Hs6UQXB3)  
+   ![앨범아트](https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/084/000/393/84000393_1682059633280_1_600x600.JPG)
+8. [Love Lee - AKMU](https://youtu.be/EvBzCp4_F28?si=Hs_Hs_Hs_Hs_Hs_H)  
+   ![앨범아트](https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/084/000/857/84000857_1691639633280_1_600x600.JPG)
+9. [Dynamite - BTS (방탄소년단)](https://youtu.be/gdZLi9oWNZg)  
+   ![앨범아트](https://upload.wikimedia.org/wikipedia/en/9/9b/BTS_-_Dynamite_%28official_cover%29.png)
+10. [How You Like That - BLACKPINK](https://youtu.be/ioNng23DkIM)  
+   ![앨범아트](https://upload.wikimedia.org/wikipedia/en/0/0e/Blackpink_-_How_You_Like_That.png) 

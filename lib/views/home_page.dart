@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/music_list_viewmodel.dart';
-import '../widgets/playlist_card.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/cupertino_bottom_nav.dart';
 import '../views/quick_pick_edit_page.dart';
-import '../widgets/music_tile.dart';
 import '../widgets/music_grid_card.dart';
 
 class HomePage extends StatelessWidget {

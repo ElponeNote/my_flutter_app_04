@@ -25,7 +25,7 @@ class MusicGridCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: CupertinoColors.black.withOpacity(0.25),
+              color: Color.fromARGB(64, 0, 0, 0),
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
@@ -55,8 +55,8 @@ class MusicGridCard extends StatelessWidget {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        CupertinoColors.black.withOpacity(0.7),
-                        CupertinoColors.black.withOpacity(0.0),
+                        Color.fromARGB(179, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0),
                       ],
                     ),
                   ),

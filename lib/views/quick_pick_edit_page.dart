@@ -161,10 +161,12 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
                     content: Text('프로필과 추천 선곡이 저장되었습니다.'),
                   ),
                 );
-                Future.delayed(const Duration(seconds: 1), () {
-                  if (!mounted) return;
-                  Navigator.pop(context);
-                });
+                if (mounted) {
+                  Future.delayed(const Duration(seconds: 1), () {
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                  });
+                }
               },
               child: const Text('저장'),
             ),
