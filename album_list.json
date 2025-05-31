@@ -1,0 +1,52 @@
+[
+  {
+    "title": "APT",
+    "artist": "로제",
+    "albumArtUrl": "https://image.bugsm.co.kr/album/images/500/40913/4091347.jpg"
+  },
+  {
+    "title": "The Lazy Song",
+    "artist": "브루노마스",
+    "albumArtUrl": "https://img.youtube.com/vi/fLexgOxsZu0/hqdefault.jpg"
+  },
+  {
+    "title": "Super Shy",
+    "artist": "NewJeans",
+    "albumArtUrl": "https://img.youtube.com/vi/ArmDp-zijuc/hqdefault.jpg"
+  },
+  {
+    "title": "EASY",
+    "artist": "LE SSERAFIM",
+    "albumArtUrl": "https://cdnimg.melon.co.kr/cm2/album/images/112/97/282/11297282_20240223151623_500.jpg"
+  },
+  {
+    "title": "I AM",
+    "artist": "IVE",
+    "albumArtUrl": "https://cdnimg.melon.co.kr/cm2/album/images/112/21/448/11221448_20230410155901_500.jpg"
+  },
+  {
+    "title": "Candy",
+    "artist": "NCT DREAM",
+    "albumArtUrl": "https://cdnimg.melon.co.kr/cm2/album/images/111/60/361/11160361_20221216100654_500.jpg"
+  },
+  {
+    "title": "F*ck My Life",
+    "artist": "SEVENTEEN",
+    "albumArtUrl": "https://cdnimg.melon.co.kr/cm2/album/images/112/36/285/11236285_20230424103119_500.jpg"
+  },
+  {
+    "title": "Love Lee",
+    "artist": "AKMU",
+    "albumArtUrl": "https://cdnimg.melon.co.kr/cm2/album/images/112/97/282/11297282_20230818103119_500.jpg"
+  },
+  {
+    "title": "Dynamite",
+    "artist": "BTS (방탄소년단)",
+    "albumArtUrl": "https://upload.wikimedia.org/wikipedia/en/9/9b/BTS_-_Dynamite_%28official_cover%29.png"
+  },
+  {
+    "title": "How You Like That",
+    "artist": "BLACKPINK",
+    "albumArtUrl": "https://upload.wikimedia.org/wikipedia/en/0/0e/Blackpink_-_How_You_Like_That.png"
+  }
+]

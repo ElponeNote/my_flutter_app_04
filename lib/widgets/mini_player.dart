@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/player_viewmodel.dart';
 import '../views/player_page.dart';
+import '../utils/image_helper.dart';
 
 class MiniPlayer extends StatelessWidget {
   final bool dark;
@@ -43,8 +44,8 @@ class MiniPlayer extends StatelessWidget {
             const SizedBox(width: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                music.albumArtUrl,
+              child: Image(
+                image: getMusicImageProvider(music),
                 width: 44,
                 height: 44,
                 fit: BoxFit.cover,

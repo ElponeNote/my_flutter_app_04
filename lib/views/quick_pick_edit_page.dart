@@ -162,10 +162,10 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
                   ),
                 );
                 if (mounted) {
-                  Future.delayed(const Duration(seconds: 1), () {
-                    if (!mounted) return;
-                    Navigator.pop(context);
-                  });
+                Future.delayed(const Duration(seconds: 1), () {
+                  if (!mounted) return;
+                  Navigator.pop(context);
+                });
                 }
               },
               child: const Text('저장'),

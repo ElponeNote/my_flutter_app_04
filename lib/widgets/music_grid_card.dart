@@ -3,6 +3,7 @@ import '../models/music.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/player_viewmodel.dart';
 import '../views/player_page.dart';
+import '../utils/image_helper.dart';
 
 class MusicGridCard extends StatelessWidget {
   final Music music;
@@ -37,8 +38,8 @@ class MusicGridCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                child: Image.network(
-                  music.albumArtUrl,
+                child: Image(
+                  image: getMusicImageProvider(music),
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
                     color: dark ? CupertinoColors.darkBackgroundGray : CupertinoColors.systemGrey4,

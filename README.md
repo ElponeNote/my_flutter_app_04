@@ -43,3 +43,26 @@ flutter run
 추가 요청이 있을 경우, 홈화면 레이아웃을 건드리지 않는 선에서(예: 스타일, 기능, 데이터, 동작 등)만 작업하겠습니다.
 혹시 홈화면에서 동작(예: 클릭 시 이동, 색상, 텍스트 등)만 수정이 필요하다면 언제든 말씀해 주세요!
 레이아웃 구조는 절대 변경하지 않겠습니다.
+
+## 2024-06-10: 앨범아트 자동화 및 유지보수 파이프라인 구축 (중요)
+
+### 앨범아트 자동화 파이프라인(1~4단계) 완성
+- sample_data.dart만 수정하면 아래 파이프라인이 자동으로 동작
+  1. extract_album_list.py → sample_data.dart에서 곡 정보(title, artist, albumArtUrl) 자동 추출 → album_list.json 생성
+  2. download_album_art_v2.py → album_list.json 기반으로 assets/album_covers/{title}_{artist}.{ext}로 앨범아트 자동 다운로드 (중복/실패 robust하게 처리, 로그 기록)
+  3. Flutter 코드(getMusicImageProvider)에서 로컬 이미지가 있으면 AssetImage, 없으면 NetworkImage로 fallback
+  4. pubspec.yaml에 assets/album_covers/ 경로 등록, 주요 위젯에서 모두 적용
+- 실패/오류/중복 등은 download_log.txt로 즉시 확인 가능
+
+### 코드/구조 변경 내역
+- lib/utils/image_helper.dart: 로컬 우선, 네트워크 fallback 유틸 함수 구현
+- music_grid_card.dart, music_tile.dart, mini_player.dart, player_page.dart 등에서 getMusicImageProvider로 통일
+- pubspec.yaml에 assets/album_covers/ 등록
+- 파이썬 스크립트(2종)로 데이터-이미지-앱 연동 완전 자동화
+
+### 유지보수/추가작업 원칙
+- sample_data.dart만 수정 → 두 파이썬 스크립트 순차 실행 → 앱은 항상 최신 로컬/네트워크 이미지로 동작
+- 홈화면 레이아웃/구조는 절대 변경하지 않고, 데이터/스타일/동작/기능만 추가/수정
+- PRD.md, README.md의 자동화 파이프라인/구조/원칙을 반드시 유지하며 추가 작업 진행
+
+---

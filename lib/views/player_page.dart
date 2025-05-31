@@ -5,6 +5,7 @@ import '../viewmodels/player_viewmodel.dart';
 import '../widgets/youtube_player_widget.dart';
 import '../viewmodels/music_list_viewmodel.dart';
 import '../models/music.dart';
+import '../utils/image_helper.dart';
 
 class PlayerPage extends StatefulWidget {
   const PlayerPage({super.key});
@@ -209,15 +210,15 @@ class _PlayerPageState extends State<PlayerPage> {
                               child: ClipRRect(
                                 key: ValueKey(music.albumArtUrl),
                                 borderRadius: BorderRadius.circular(18),
-                                child: Image.network(
-                                  music.albumArtUrl,
+                                child: Image(
+                                  image: getMusicImageProvider(music),
                                   width: width,
                                   height: height,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) => SizedBox(
                                     width: width,
                                     height: height,
-                                    child: DecoratedBox(
+                                    child: Container(
                                       decoration: BoxDecoration(
                                         color: CupertinoColors.darkBackgroundGray,
                                       ),
