@@ -1,6 +1,6 @@
-FAIL (404): assets/album_covers/APT_로제.jpg | URL: https://image.bugsm.co.kr/album/images/500/40913/4091347.jpg
-DOWNLOADED: assets/album_covers/The_Lazy_Song_브루노마스.jpg
-DOWNLOADED: assets/album_covers/Super_Shy_NewJeans.jpg
+SKIP (exists): assets/album_covers/APT_로제.jpg
+SKIP (exists): assets/album_covers/The_Lazy_Song_브루노마스.jpg
+SKIP (exists): assets/album_covers/Super_Shy_NewJeans.jpg
 FAIL (404): assets/album_covers/EASY_LE_SSERAFIM.jpg | URL: https://cdnimg.melon.co.kr/cm2/album/images/112/97/282/11297282_20240223151623_500.jpg
 FAIL (404): assets/album_covers/I_AM_IVE.jpg | URL: https://cdnimg.melon.co.kr/cm2/album/images/112/21/448/11221448_20230410155901_500.jpg
 FAIL (404): assets/album_covers/Candy_NCT_DREAM.jpg | URL: https://cdnimg.melon.co.kr/cm2/album/images/111/60/361/11160361_20221216100654_500.jpg

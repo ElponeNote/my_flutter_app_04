@@ -8,10 +8,13 @@ PODS:
     - Flutter
     - OrderedSet (~> 5.0)
   - OrderedSet (5.0.0)
+  - share (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
+  - share (from `.symlinks/plugins/share/ios`)
 
 SPEC REPOS:
   trunk:
@@ -22,11 +25,14 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_inappwebview:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
+  share:
+    :path: ".symlinks/plugins/share/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_inappwebview: 180a2f38c18dfbfb8f0c12f7bd42ce02dfd6c765
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
+  share: a34936589f3090d59481bcdc5c30cc9dd47c75f6
 
 PODFILE CHECKSUM: 6b6221362c95d2582fcdf6dd35dd841e7d22d0af
 
