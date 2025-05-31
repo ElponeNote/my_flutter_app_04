@@ -6,9 +6,40 @@ import '../widgets/mini_player.dart';
 import '../widgets/cupertino_bottom_nav.dart';
 import '../views/quick_pick_edit_page.dart';
 import '../widgets/music_grid_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? _profileImagePath;
+  String _nickname = 'SkoolChef';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _profileImagePath = prefs.getString('profile_image_path');
+      _nickname = prefs.getString('profile_nickname') ?? 'SkoolChef';
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 프로필 편집 후 돌아올 때 갱신
+    Future.delayed(Duration.zero, _loadProfileData);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +67,34 @@ class HomePage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                radius: 16,
-                                backgroundColor: Colors.orange,
-                                child: Icon(CupertinoIcons.person_solid, color: Colors.white, size: 18),
-                              ),
+                              _profileImagePath != null && _profileImagePath!.isNotEmpty
+                                  ? CircleAvatar(
+                                      radius: 16,
+                                      backgroundImage: FileImage(File(_profileImagePath!)),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: Colors.orange,
+                                      child: Icon(CupertinoIcons.person_solid, color: Colors.white, size: 18),
+                                    ),
                               const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('SkoolChef', style: TextStyle(fontSize: 13, color: CupertinoColors.systemGrey2)),
+                                  Text(_nickname, style: TextStyle(fontSize: 13, color: CupertinoColors.systemGrey2)),
                                   Text('빠른 선곡', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19, color: CupertinoColors.white)),
                                 ],
                               ),
                             ],
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
+                            onTap: () async {
+                              final result = await Navigator.of(context).push(
                                 CupertinoPageRoute(builder: (context) => const QuickPickEditPage()),
                               );
+                              if (result == true) {
+                                _loadProfileData(); // 저장된 경우에만 갱신
+                              }
                             },
                             child: Icon(CupertinoIcons.right_chevron, color: CupertinoColors.systemGrey2, size: 22),
                           ),

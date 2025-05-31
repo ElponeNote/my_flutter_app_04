@@ -5,11 +5,13 @@ class YoutubePlayerWidget extends StatelessWidget {
   final YoutubePlayerController controller;
   final void Function(Duration position, Duration duration)? onTimeUpdate;
   final double aspectRatio;
+  final VoidCallback? onReady;
   const YoutubePlayerWidget({
     super.key,
     required this.controller,
     this.onTimeUpdate,
     this.aspectRatio = 16 / 9,
+    this.onReady,
   });
 
   @override
@@ -30,6 +32,7 @@ class YoutubePlayerWidget extends StatelessWidget {
             onTimeUpdate!(controller.value.position, controller.value.metaData.duration);
           }
         });
+        if (onReady != null) onReady!();
       },
     );
   }

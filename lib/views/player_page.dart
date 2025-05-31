@@ -18,6 +18,7 @@ class _PlayerPageState extends State<PlayerPage> {
   YoutubePlayerController? _controller;
   int _tabIndex = 0; // 0: 노래, 1: 동영상
   int _bottomTabIndex = 0; // 0: 다음 트랙, 1: 가사, 2: 관련 항목
+  bool _isControllerReady = false; // 컨트롤러 준비 상태
 
   @override
   void didChangeDependencies() {
@@ -28,6 +29,7 @@ class _PlayerPageState extends State<PlayerPage> {
     if (music != null) {
       final videoId = YoutubePlayer.convertUrlToId(music.youtubeUrl);
       if (videoId != null) {
+        _isControllerReady = false;
         _controller = YoutubePlayerController(
           initialVideoId: videoId,
           flags: const YoutubePlayerFlags(
@@ -45,7 +47,7 @@ class _PlayerPageState extends State<PlayerPage> {
         _controller!.addListener(() {
           if (mounted) {
             setState(() {});
-            // 곡이 끝났는지 감지
+            playerVM.setPlaying(_controller!.value.isPlaying);
             if (_controller!.value.playerState == PlayerState.ended) {
               if (playerVM.repeatMode == RepeatMode.one) {
                 _controller!.seekTo(Duration.zero);
@@ -67,6 +69,7 @@ class _PlayerPageState extends State<PlayerPage> {
     if (music != null) {
       final videoId = YoutubePlayer.convertUrlToId(music.youtubeUrl);
       if (videoId != null) {
+        _isControllerReady = false;
         _controller?.dispose();
         _controller = YoutubePlayerController(
           initialVideoId: videoId,
@@ -239,6 +242,11 @@ class _PlayerPageState extends State<PlayerPage> {
                           child: YoutubePlayerWidget(
                             controller: _controller!,
                             aspectRatio: 16 / 9,
+                            onReady: () {
+                              setState(() {
+                                _isControllerReady = true;
+                              });
+                            },
                           ),
                         ),
                       ),
@@ -333,17 +341,16 @@ class _PlayerPageState extends State<PlayerPage> {
                                   size: 44,
                                   color: CupertinoColors.white,
                                 ),
-                                onPressed: () {
-                                  if (_controller != null) {
-                                    if (_controller!.value.isPlaying) {
-                                      _controller!.pause();
-                                      playerVM.setPlaying(false);
-                                    } else {
-                                      _controller!.play();
-                                      playerVM.setPlaying(true);
-                                    }
-                                  }
-                                },
+                                onPressed: (_controller != null && _isControllerReady)
+                                    ? () {
+                                        playerVM.setPlaying(!_controller!.value.isPlaying);
+                                        if (_controller!.value.isPlaying) {
+                                          _controller!.pause();
+                                        } else {
+                                          _controller!.play();
+                                        }
+                                      }
+                                    : null,
                               ),
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),

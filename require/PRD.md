@@ -55,3 +55,11 @@ lib/
 frontend.md
 README.md
 require/PRD.md
+
+## 유지보수/자동화/데이터 검증 (2024-06-10~)
+- sample_data.dart 곡 데이터 변경 시 파이썬 스크립트로 앨범아트 자동 동기화
+- 곡별 유튜브 영상/썸네일이 실제로 재생 가능한지 주기적 검증
+- 영상이 차단/삭제/비공개 등으로 재생 불가 시 최신 인기곡(예: 아이유 최신곡 등)으로 즉시 대체
+- 곡별 albumArtUrl은 유튜브 썸네일(hqdefault.jpg)로 통일, 공식 MV 기준으로 관리
+- PRD.md와 README.md에 모든 유지보수/자동화/데이터 변경 내역을 반드시 기록
+- 예시: 2024-06-10 아이유 최신곡(Shopper, Love wins all, 에잇, Blueming) 반영, Smart/Magnetic 등 영상 미노출 곡 공식 MV로 교체

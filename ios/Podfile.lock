@@ -7,14 +7,21 @@ PODS:
   - flutter_inappwebview/Core (0.0.1):
     - Flutter
     - OrderedSet (~> 5.0)
+  - image_picker_ios (0.0.1):
+    - Flutter
   - OrderedSet (5.0.0)
   - share (0.0.1):
     - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - share (from `.symlinks/plugins/share/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -25,14 +32,20 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_inappwebview:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_inappwebview: 180a2f38c18dfbfb8f0c12f7bd42ce02dfd6c765
+  image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   share: a34936589f3090d59481bcdc5c30cc9dd47c75f6
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
 
 PODFILE CHECKSUM: 6b6221362c95d2582fcdf6dd35dd841e7d22d0af
 
