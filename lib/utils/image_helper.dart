@@ -12,7 +12,7 @@ String? getLocalAlbumArtAssetPath(Music music) {
   final artist = _safeFilename(music.artist);
   // 확장자 우선순위: jpg, png
   for (final ext in ['jpg', 'png', 'jpeg', 'webp']) {
-    final path = 'assets/album_covers/${title}_${artist}.$ext';
+    final path = 'assets/album_covers/$title"_$artist.$ext';
     if (File(path).existsSync()) {
       return path;
     }

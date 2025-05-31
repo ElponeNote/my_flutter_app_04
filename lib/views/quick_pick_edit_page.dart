@@ -45,7 +45,6 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
       'checked': false,
     },
   ];
-  File? _profileImage;
   File? _pendingProfileImage;
   final ImagePicker _picker = ImagePicker();
 
@@ -224,7 +223,6 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
     final prefs = await SharedPreferences.getInstance();
     if (_pendingProfileImage != null) {
       await prefs.setString('profile_image_path', _pendingProfileImage!.path);
-      _profileImage = _pendingProfileImage;
     }
     await prefs.setString('profile_nickname', _pendingNickname);
     nickname = _pendingNickname;
@@ -240,7 +238,6 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
     final nick = prefs.getString('profile_nickname');
     setState(() {
       if (path != null && path.isNotEmpty) {
-        _profileImage = File(path);
         _pendingProfileImage = File(path);
       }
       if (nick != null && nick.isNotEmpty) {
@@ -329,13 +326,15 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('추천 선곡 리스트', style: TextStyle(color: CupertinoColors.white, fontSize: 17, fontWeight: FontWeight.bold)),
-                CupertinoButton(
-                  padding: const EdgeInsets.all(0),
-                  minSize: 36,
-                  borderRadius: BorderRadius.circular(18),
-                  color: CupertinoColors.activeBlue,
-                  onPressed: _addQuickPick,
-                  child: const Icon(CupertinoIcons.add, color: CupertinoColors.white, size: 22),
+                Container(
+                  constraints: BoxConstraints(minHeight: 36),
+                  child: CupertinoButton(
+                    padding: const EdgeInsets.all(0),
+                    borderRadius: BorderRadius.circular(18),
+                    color: CupertinoColors.activeBlue,
+                    onPressed: _addQuickPick,
+                    child: const Icon(CupertinoIcons.add, color: CupertinoColors.white, size: 22),
+                  ),
                 ),
               ],
             ),
@@ -351,18 +350,20 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
                 ),
                 child: Row(
                   children: [
-                    CupertinoButton(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      minSize: 0,
-                      onPressed: () {
-                        setState(() {
-                          item['checked'] = !(item['checked'] ?? false);
-                        });
-                      },
-                      child: Icon(
-                        item['checked'] == true ? CupertinoIcons.check_mark_circled_solid : CupertinoIcons.circle,
-                        color: item['checked'] == true ? CupertinoColors.activeBlue : CupertinoColors.systemGrey2,
-                        size: 26,
+                    Container(
+                      constraints: BoxConstraints(minHeight: 0),
+                      child: CupertinoButton(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        onPressed: () {
+                          setState(() {
+                            item['checked'] = !(item['checked'] ?? false);
+                          });
+                        },
+                        child: Icon(
+                          item['checked'] == true ? CupertinoIcons.check_mark_circled_solid : CupertinoIcons.circle,
+                          color: item['checked'] == true ? CupertinoColors.activeBlue : CupertinoColors.systemGrey2,
+                          size: 26,
+                        ),
                       ),
                     ),
                     ClipRRect(

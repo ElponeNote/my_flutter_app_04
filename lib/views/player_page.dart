@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../viewmodels/player_viewmodel.dart';
 import '../widgets/youtube_player_widget.dart';
-import '../viewmodels/music_list_viewmodel.dart';
 import '../utils/image_helper.dart';
 import 'package:share/share.dart';
 
@@ -18,18 +17,15 @@ class _PlayerPageState extends State<PlayerPage> {
   YoutubePlayerController? _controller;
   int _tabIndex = 0; // 0: 노래, 1: 동영상
   int _bottomTabIndex = 0; // 0: 다음 트랙, 1: 가사, 2: 관련 항목
-  bool _isControllerReady = false; // 컨트롤러 준비 상태
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final musicListVM = Provider.of<MusicListViewModel>(context, listen: false);
-    final music = Provider.of<PlayerViewModel>(context).currentMusic;
+  void initState() {
+    super.initState();
     final playerVM = Provider.of<PlayerViewModel>(context, listen: false);
+    final music = playerVM.currentMusic;
     if (music != null) {
       final videoId = YoutubePlayer.convertUrlToId(music.youtubeUrl);
       if (videoId != null) {
-        _isControllerReady = false;
         _controller = YoutubePlayerController(
           initialVideoId: videoId,
           flags: const YoutubePlayerFlags(
@@ -44,50 +40,6 @@ class _PlayerPageState extends State<PlayerPage> {
             enableCaption: false,
           ),
         );
-        _controller!.addListener(() {
-          if (mounted) {
-            setState(() {});
-            playerVM.setPlaying(_controller!.value.isPlaying);
-            if (_controller!.value.playerState == PlayerState.ended) {
-              if (playerVM.repeatMode == RepeatMode.one) {
-                _controller!.seekTo(Duration.zero);
-                _controller!.play();
-              } else {
-                playerVM.playNext();
-              }
-            }
-          }
-        });
-      }
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant PlayerPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    final music = Provider.of<PlayerViewModel>(context, listen: false).currentMusic;
-    if (music != null) {
-      final videoId = YoutubePlayer.convertUrlToId(music.youtubeUrl);
-      if (videoId != null) {
-        _isControllerReady = false;
-        _controller?.dispose();
-        _controller = YoutubePlayerController(
-          initialVideoId: videoId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: true,
-            mute: false,
-            hideControls: true,
-            controlsVisibleAtStart: false,
-            disableDragSeek: false,
-            loop: false,
-            isLive: false,
-            forceHD: false,
-            enableCaption: false,
-          ),
-        );
-        _controller!.addListener(() {
-          if (mounted) setState(() {});
-        });
       }
     }
   }
@@ -178,22 +130,33 @@ class _PlayerPageState extends State<PlayerPage> {
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 500),
                               transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
-                              child: ClipRRect(
-                                key: ValueKey(music.albumArtUrl),
-                                borderRadius: BorderRadius.circular(18),
-                                child: Image(
-                                  image: getMusicImageProvider(music),
-                                  width: width,
-                                  height: height,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => SizedBox(
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (_controller != null) {
+                                    if (_controller!.value.isPlaying) {
+                                      _controller!.pause();
+                                    } else {
+                                      _controller!.play();
+                                    }
+                                  }
+                                },
+                                child: ClipRRect(
+                                  key: ValueKey(music.albumArtUrl),
+                                  borderRadius: BorderRadius.circular(18),
+                                  child: Image(
+                                    image: getMusicImageProvider(music),
                                     width: width,
                                     height: height,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: CupertinoColors.darkBackgroundGray,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) => SizedBox(
+                                      width: width,
+                                      height: height,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: CupertinoColors.darkBackgroundGray,
+                                        ),
+                                        child: const Icon(CupertinoIcons.music_note, size: 60, color: CupertinoColors.systemGrey2),
                                       ),
-                                      child: const Icon(CupertinoIcons.music_note, size: 60, color: CupertinoColors.systemGrey2),
                                     ),
                                   ),
                                 ),
@@ -231,24 +194,22 @@ class _PlayerPageState extends State<PlayerPage> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    // 유튜브 플레이어
+                    // YoutubePlayerBuilder로 유튜브 플레이어 영역 리팩토링
                     if (_controller != null)
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
-                        child: Padding(
-                          key: ValueKey(music.youtubeUrl),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: YoutubePlayerWidget(
-                            controller: _controller!,
-                            aspectRatio: 16 / 9,
-                            onReady: () {
-                              setState(() {
-                                _isControllerReady = true;
-                              });
-                            },
-                          ),
+                      YoutubePlayerBuilder(
+                        player: YoutubePlayer(
+                          controller: _controller!,
+                          aspectRatio: 16 / 9,
+                          onReady: () {
+                            // YoutubePlayer가 준비되면 필요한 추가 동작 가능
+                          },
                         ),
+                        builder: (context, player) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: player,
+                          );
+                        },
                       ),
                     const SizedBox(height: 18),
                     // 좋아요/댓글/저장/공유 버튼 (유튜브 플레이어 하단)
@@ -274,7 +235,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      '${count >= 1000 ? (count / 1000).toStringAsFixed(1) + 'K' : count}',
+                                      count >= 1000 ? '${(count / 1000).toStringAsFixed(1)}K' : '$count',
                                       style: const TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12),
                                     ),
                                   ],
@@ -337,18 +298,21 @@ class _PlayerPageState extends State<PlayerPage> {
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),
                                 child: Icon(
-                                  playerVM.isPlaying ? CupertinoIcons.pause_solid : CupertinoIcons.play_arrow_solid,
+                                  (_controller != null && _controller!.value.isPlaying)
+                                      ? CupertinoIcons.play_arrow_solid
+                                      : CupertinoIcons.pause_solid,
                                   size: 44,
                                   color: CupertinoColors.white,
                                 ),
-                                onPressed: (_controller != null && _isControllerReady)
+                                onPressed: (_controller != null)
                                     ? () {
-                                        playerVM.setPlaying(!_controller!.value.isPlaying);
-                                        if (_controller!.value.isPlaying) {
-                                          _controller!.pause();
-                                        } else {
-                                          _controller!.play();
-                                        }
+                                        setState(() {
+                                          if (_controller!.value.isPlaying) {
+                                            _controller!.pause();
+                                          } else {
+                                            _controller!.play();
+                                          }
+                                        });
                                       }
                                     : null,
                               ),
