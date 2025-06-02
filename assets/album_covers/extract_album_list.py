@@ -22,3 +22,4 @@ with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
     json.dump(album_list, f, ensure_ascii=False, indent=2)
 
 print(f"Extracted {len(album_list)} entries to {OUTPUT_JSON}")
+ 

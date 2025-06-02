@@ -173,43 +173,51 @@ class _HomePageState extends State<HomePage> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 88,
+            bottom: 56,
             child: SafeArea(
               top: false, left: false, right: false, bottom: true,
-              child: MiniPlayer(dark: true),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, bottom: 6),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '미니 플레이어',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: CupertinoColors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Mini Player',
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 13,
+                            color: CupertinoColors.systemGrey2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  MiniPlayer(dark: true),
+                ],
+              ),
             ),
           ),
           // 네비게이션 바를 Stack의 하단에 고정
           Positioned(
             left: 0,
             right: 0,
-            bottom: 32,
+            bottom: 0,
             child: SafeArea(
               top: false, left: false, right: false, bottom: true,
               child: CupertinoBottomNav(currentIndex: 0, onTap: (index) {}),
-            ),
-          ),
-          // 홈 인디케이터 (항상 화면 맨 아래에 오버레이)
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Center(
-              child: Container(
-                width: 64,
-                height: 6,
-                decoration: BoxDecoration(
-                  color: Color.alphaBlend(Colors.white.withAlpha((0.38 * 255).toInt()), Colors.transparent),
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.alphaBlend(Colors.black.withAlpha((0.18 * 255).toInt()), Colors.transparent),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
         ],

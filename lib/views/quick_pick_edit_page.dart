@@ -89,7 +89,6 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
               ),
               actions: [
                 CupertinoDialogAction(
-                  child: const Text('추가'),
                   onPressed: () {
                     final url = urlController.text.trim();
                     String? videoId;
@@ -123,9 +122,9 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
                     });
                     // 팝업 닫지 않음
                   },
+                  child: const Text('추가'),
                 ),
                 CupertinoDialogAction(
-                  child: const Text('영구 저장'),
                   isDefaultAction: true,
                   onPressed: () {
                     final url = urlController.text.trim();
@@ -159,6 +158,11 @@ class _QuickPickEditPageState extends State<QuickPickEditPage> {
                     ));
                     Navigator.of(context).pop();
                   },
+                  child: const Text('영구 저장'),
+                ),
+                CupertinoDialogAction(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('닫기'),
                 ),
               ],
             );

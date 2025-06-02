@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../viewmodels/player_viewmodel.dart';
-import '../widgets/youtube_player_widget.dart';
 import '../utils/image_helper.dart';
-import 'package:share/share.dart';
+import 'package:flutter/material.dart';
 
 class PlayerPage extends StatefulWidget {
   const PlayerPage({super.key});
@@ -122,11 +121,12 @@ class _PlayerPageState extends State<PlayerPage> {
                     // 앨범아트
                     LayoutBuilder(
                       builder: (context, constraints) {
-                        final double width = MediaQuery.of(context).size.width - 16;
+                        final double fullWidth = MediaQuery.of(context).size.width - 16;
+                        final double width = fullWidth * 0.8;
                         final double height = width * 9 / 16;
                         return Center(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 500),
                               transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
@@ -212,59 +212,140 @@ class _PlayerPageState extends State<PlayerPage> {
                         },
                       ),
                     const SizedBox(height: 18),
-                    // 좋아요/댓글/저장/공유 버튼 (유튜브 플레이어 하단)
+                    // 좋아요/싫어요 + 댓글/저장/공유 버튼 (샘플 스타일)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       child: Consumer<PlayerViewModel>(
                         builder: (context, playerVM, _) {
                           final isLiked = playerVM.isLiked(music);
-                          // 임의 카운트(1.2K + 좋아요 시 1 증가, 해제 시 1 감소)
-                          int baseCount = 1200;
-                          int count = isLiked ? baseCount + 1 : baseCount;
+                          final isDisliked = playerVM.isDisliked(music);
+                          int likeCount = isLiked ? 95001 : 95000; // 샘플처럼 9.5만
+                          String formatCount(int count) {
+                            if (count >= 10000) {
+                              return '${(count / 10000).toStringAsFixed(1)}만';
+                            } else if (count >= 1000) {
+                              return '${(count / 1000).toStringAsFixed(1)}K';
+                            } else {
+                              return '$count';
+                            }
+                          }
+                          bool isSaved = playerVM.isSaved(music);
                           return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                onTap: () => playerVM.toggleLike(music),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      isLiked ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-                                      color: isLiked ? CupertinoColors.systemRed : CupertinoColors.systemGrey,
-                                      size: 28,
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      count >= 1000 ? '${(count / 1000).toStringAsFixed(1)}K' : '$count',
-                                      style: const TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12),
-                                    ),
-                                  ],
+                              // 좋아요/싫어요
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: CupertinoColors.systemGrey6.withOpacity(0.13),
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => playerVM.toggleLike(music),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              CupertinoIcons.hand_thumbsup,
+                                              color: isLiked ? CupertinoColors.activeBlue : CupertinoColors.systemGrey,
+                                              size: 22,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              formatCount(likeCount),
+                                              style: TextStyle(
+                                                color: CupertinoColors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 1,
+                                        height: 22,
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        color: CupertinoColors.systemGrey2.withOpacity(0.25),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => playerVM.toggleDislike(music),
+                                        child: Icon(
+                                          CupertinoIcons.hand_thumbsdown,
+                                          color: isDisliked ? CupertinoColors.systemRed : CupertinoColors.systemGrey,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Column(
-                                children: const [
-                                  Icon(CupertinoIcons.chat_bubble_text, color: CupertinoColors.systemGrey, size: 28),
-                                  SizedBox(height: 2),
-                                  Text('댓글', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
-                                ],
+                              const SizedBox(width: 6),
+                              // 저장 버튼
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: CupertinoColors.systemGrey6.withOpacity(0.13),
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      playerVM.toggleSave(music);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          CupertinoIcons.add,
+                                          color: isSaved ? CupertinoColors.activeBlue : CupertinoColors.systemGrey,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        const Text('저장', style: TextStyle(color: CupertinoColors.white, fontSize: 15)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                              Column(
-                                children: const [
-                                  Icon(CupertinoIcons.bookmark, color: CupertinoColors.systemGrey, size: 28),
-                                  SizedBox(height: 2),
-                                  Text('저장', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
-                                ],
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Share.share('${music.title} - ${music.artist}\n${music.youtubeUrl}');
-                                },
-                                child: Column(
-                                  children: const [
-                                    Icon(CupertinoIcons.share, color: CupertinoColors.systemGrey, size: 28),
-                                    SizedBox(height: 2),
-                                    Text('공유', style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 12)),
-                                  ],
+                              const SizedBox(width: 6),
+                              // 공유 버튼
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: CupertinoColors.systemGrey6.withOpacity(0.13),
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // 공유 시트 (url 복사 등)
+                                      showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) => CupertinoAlertDialog(
+                                          title: const Text('공유'),
+                                          content: Text('링크: ${music.youtubeUrl}'),
+                                          actions: [
+                                            CupertinoDialogAction(
+                                              child: const Text('닫기'),
+                                              onPressed: () => Navigator.of(context).pop(),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(CupertinoIcons.share, color: CupertinoColors.systemGrey, size: 20),
+                                        SizedBox(width: 4),
+                                        Text('공유', style: TextStyle(color: CupertinoColors.white, fontSize: 15)),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -272,8 +353,52 @@ class _PlayerPageState extends State<PlayerPage> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 18),
-                    // 컨트롤 버튼 (셔플, 이전, 재생/일시정지, 다음, 반복)
+                    // 상태바(진행바, 남은시간/총시간) - 위치 이동
+                    Consumer<PlayerViewModel>(
+                      builder: (context, playerVM, _) {
+                        final pos = playerVM.position;
+                        final dur = playerVM.duration;
+                        String format(Duration d) {
+                          String two(int n) => n.toString().padLeft(2, '0');
+                          final m = two(d.inMinutes.remainder(60));
+                          final s = two(d.inSeconds.remainder(60));
+                          return '$m:$s';
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Row(
+                              children: [
+                                Text(format(pos), style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 13)),
+                                Expanded(
+                                  child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 12),
+                                      activeTrackColor: Colors.white,
+                                      inactiveTrackColor: Color.fromRGBO(255,255,255,0.5),
+                                      thumbColor: Colors.white,
+                                    ),
+                                    child: Slider(
+                                      value: pos.inSeconds.clamp(0, dur.inSeconds).toDouble(),
+                                      min: 0,
+                                      max: dur.inSeconds.toDouble(),
+                                      onChanged: (v) {
+                                        playerVM.seek(Duration(seconds: v.toInt()));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Text(format(dur), style: TextStyle(color: CupertinoColors.systemGrey2, fontSize: 13)),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    // 컨트롤 버튼 (셔플, 이전, 재생/일시정지, 다음, 반복) - 크기 조정
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Consumer<PlayerViewModel>(
@@ -283,27 +408,20 @@ class _PlayerPageState extends State<PlayerPage> {
                             children: [
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),
-                                child: Icon(CupertinoIcons.shuffle, size: 26, color: playerVM.isShuffle ? CupertinoColors.white : CupertinoColors.systemGrey2),
                                 onPressed: () {
                                   playerVM.toggleShuffle();
                                 },
+                                child: Icon(CupertinoIcons.shuffle, size: 24, color: playerVM.isShuffle ? CupertinoColors.white : CupertinoColors.systemGrey2),
                               ),
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),
-                                child: Icon(CupertinoIcons.backward_end_fill, size: 32, color: CupertinoColors.white),
                                 onPressed: () {
                                   playerVM.playPrevious();
                                 },
+                                child: Icon(CupertinoIcons.backward_end_fill, size: 32, color: CupertinoColors.systemGrey),
                               ),
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),
-                                child: Icon(
-                                  (_controller != null && _controller!.value.isPlaying)
-                                      ? CupertinoIcons.play_arrow_solid
-                                      : CupertinoIcons.pause_solid,
-                                  size: 44,
-                                  color: CupertinoColors.white,
-                                ),
                                 onPressed: (_controller != null)
                                     ? () {
                                         setState(() {
@@ -315,28 +433,59 @@ class _PlayerPageState extends State<PlayerPage> {
                                         });
                                       }
                                     : null,
+                                child: Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        CupertinoColors.white,
+                                        CupertinoColors.systemGrey5,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: CupertinoColors.black.withValues(alpha: 0.18),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      (_controller != null && _controller!.value.isPlaying)
+                                          ? CupertinoIcons.pause_solid
+                                          : CupertinoIcons.play_arrow_solid,
+                                      size: 48,
+                                      color: CupertinoColors.black,
+                                    ),
+                                  ),
+                                ),
                               ),
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),
-                                child: Icon(CupertinoIcons.forward_end_fill, size: 32, color: CupertinoColors.white),
                                 onPressed: () {
                                   playerVM.playNext();
                                 },
+                                child: Icon(CupertinoIcons.forward_end_fill, size: 32, color: CupertinoColors.systemGrey),
                               ),
                               CupertinoButton(
                                 padding: const EdgeInsets.all(8),
+                                onPressed: () {
+                                  playerVM.toggleRepeatMode();
+                                },
                                 child: Icon(
                                   CupertinoIcons.repeat,
-                                  size: 26,
+                                  size: 24,
                                   color: playerVM.repeatMode == RepeatMode.none
                                       ? CupertinoColors.systemGrey2
                                       : playerVM.repeatMode == RepeatMode.all
                                           ? CupertinoColors.activeBlue
                                           : CupertinoColors.systemRed,
                                 ),
-                                onPressed: () {
-                                  playerVM.toggleRepeatMode();
-                                },
                               ),
                             ],
                           );
@@ -391,3 +540,5 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 }
+
+// TODO: CupertinoSlider는 thumb 크기 커스텀을 직접 지원하지 않으므로, 향후 커스텀 위젯으로 대체 필요

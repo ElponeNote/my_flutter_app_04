@@ -21,6 +21,12 @@ class PlayerViewModel extends ChangeNotifier {
   // --- 추가: 곡별 좋아요 상태 ---
   final Map<String, bool> likedSongs = {};
 
+  // 싫어요 상태 관리
+  final Map<String, bool> dislikedSongs = {};
+
+  // 저장 상태 관리
+  final Map<String, bool> savedSongs = {};
+
   PlayerViewModel() {
     // 앱 시작 시 첫 곡을 기본값으로 설정
     if (sampleMusics.isNotEmpty) {
@@ -162,5 +168,32 @@ class PlayerViewModel extends ChangeNotifier {
   /// 곡별 좋아요 여부 반환
   bool isLiked(Music music) {
     return likedSongs[music.youtubeUrl] ?? false;
+  }
+
+  // 싫어요 상태 관리
+  void toggleDislike(Music music) {
+    final key = music.youtubeUrl;
+    dislikedSongs[key] = !(dislikedSongs[key] ?? false);
+    notifyListeners();
+  }
+
+  bool isDisliked(Music music) {
+    return dislikedSongs[music.youtubeUrl] ?? false;
+  }
+
+  // 저장 상태 관리
+  void toggleSave(Music music) {
+    final key = music.youtubeUrl;
+    savedSongs[key] = !(savedSongs[key] ?? false);
+    notifyListeners();
+  }
+
+  bool isSaved(Music music) {
+    return savedSongs[music.youtubeUrl] ?? false;
+  }
+
+  // 추천 큐로 초기화
+  void initQueueFromRecommended(List<Music> recommended) {
+    setQueue(recommended);
   }
 }
